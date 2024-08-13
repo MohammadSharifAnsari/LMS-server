@@ -2,6 +2,9 @@ app.use(path,middileware functions)=>isme app.use() ki khasiyat yeh hoti hai ki 
 example=>A route will match any path that follows its path immediately with a “/”. For example: app.use('/apple', ...) will match “/apple”, “/apple/images”, “/apple/images/news”, and so on.
 src=https://expressjs.com/en/4x/api.html#path-examples
 it works for all get put post delete requests
+MONGO_URL=mongodb://127.0.0.1:27017/LMS
+P4YysTdtAfsUKyPY
+mohammadsharifansari157
 ---------------------------------------------------------------------------
 
 
