@@ -1,0 +1,165 @@
+app.use(path,middileware functions)=>isme app.use() ki khasiyat yeh hoti hai ki yeh path and same extensible path sabhi pe work karta hai
+example=>A route will match any path that follows its path immediately with a “/”. For example: app.use('/apple', ...) will match “/apple”, “/apple/images”, “/apple/images/news”, and so on.
+src=https://expressjs.com/en/4x/api.html#path-examples
+it works for all get put post delete requests
+---------------------------------------------------------------------------
+
+
+
+Error-handling middleware
+
+Error-handling middleware always takes four arguments. You must provide four arguments to identify it as an error-handling middleware function. Even if you don’t need to use the next object, you must specify it to maintain the signature. Otherwise, the next object will be interpreted as regular middleware and will fail to handle errors. For details about error-handling middleware, see: Error handling.
+
+Define error-handling middleware functions in the same way as other middleware functions, except with four arguments instead of three, specifically with the signature (err, req, res, next)):
+
+app.use(function (err, req, res, next) {
+  console.error(err.stack)
+  res.status(500).send('Something broke!')
+})
+------------------------------------------------------------------------------
+app.listen([port[, host[, backlog]]][, callback])
+Binds and listens for connections on the specified host and port. This method is identical to Node’s http.Server.listen().
+
+If port is omitted or is 0, the operating system will assign an arbitrary unused port, which is useful for cases like automated tasks (tests, etc.).
+-----------------------------------------------------------------
+The app.all() function is used to route all types of HTTP requests. Like if we have POST, GET, PUT, DELETE, etc, requests made to any specific route, let’s say /user, so instead of defining different APIs like app.post(‘/user’), app.get(‘/user’), etc, we can define single API app.all(‘/user’) which will accept all type of HTTP request. 
+
+Syntax:
+
+app.all( path, callback )
+Parameters:
+
+Path: It is the path for which the middleware function is called.
+Callback: It can be a middleware function or a series/array of functions.
+---------------------------------------------------------------------
+Parse Cookie header and populate req.cookies with an object keyed by the cookie names. Optionally you may enable signed cookie support by passing a secret string, which assigns req.secret so it may be used by other middleware.
+-------------------------------------------------------------
+
+433
+
+Here is the explanation that should clear doubts on express.json() and express.urlencoded() and the use of body-parser. It took me some time to figure this out.
+
+What is Middleware? It is those methods/functions/operations that are called BETWEEN processing the Request and sending the Response in your application method.
+
+When talking about express.json() and express.urlencoded() think specifically about POST requests (i.e. the .post request object) and PUT Requests (i.e. the .put request object)
+
+You DO NOT NEED express.json() and express.urlencoded() for GET Requests or DELETE Requests.
+
+You NEED express.json() and express.urlencoded() for POST and PUT requests, because in both these requests you are sending data (in the form of some data object) to the server and you are asking the server to accept or store that data (object), which is enclosed in the body (i.e. req.body) of that (POST or PUT) Request
+
+Express provides you with middleware to deal with the (incoming) data (object) in the body of the request.
+
+a. express.json() is a method inbuilt in express to recognize the incoming Request Object as a JSON Object. This method is called as a middleware in your application using the code: app.use(express.json());
+
+b. express.urlencoded() is a method inbuilt in express to recognize the incoming Request Object as strings or arrays. This method is called as a middleware in your application using the code: app.use(express.urlencoded());
+
+ALTERNATIVELY, I recommend using body-parser (it is an NPM package) to do the same thing. It is developed by the same peeps who built express and is designed to work with express. body-parser used to be part of express. Think of body-parser specifically for POST Requests (i.e. the .post request object) and/or PUT Requests (i.e. the .put request object).
+
+In body-parser you can do
+
+// calling body-parser to handle the Request Object from POST requests
+var bodyParser = require('body-parser');
+// parse application/json, basically parse incoming Request Object as a JSON Object 
+app.use(bodyParser.json());
+// parse application/x-www-form-urlencoded, basically can only parse incoming Request Object if strings or arrays
+app.use(bodyParser.urlencoded({ extended: false }));
+// combines the 2 above, then you can parse incoming Request Object if object, with nested objects, or generally any type.
+app.use(bodyParser.urlencoded({ extended: true }));
+Share
+Edit
+Follow
+answered Aug 14, 2018 at 14:53
+Kean Amaral's user avatar
+Kean Amaral
+5,70322 gold badges1616 silver badges99 bronze badges
+97
+If you are using Express >= 4.16.0, body parser has been re-added under the methods express.json() and express.urlencoded(). – 
+David Ferreira
+ Mar 16, 2019 at 17:58
+21
+app.use(bodyParser.urlencoded({ extended: true })); does not combine app.use(bodyParser.json()); and app.use(bodyParser.urlencoded({ extended: false }));: it does not handle application/json but only application/x-www-form-urlencoded. The extended options is used to specify whether bodyParser should parse URL-encoded data with qs (extended: true) or querystring (extended: false). – 
+kimamula
+ Jun 9, 2019 at 4:14
+6
+body-parser is deprecated. We should be using the inbuilt express methods. – 
+Rap
+ Mar 17, 2021 at 15:04
+1
+@VirajSingh it means that the bodyParser will use the lib qs if set as false it will use the querystring – 
+Kleber Germano
+ Apr 15, 2021 at 20:36
+1
+@Kleber Germano In which scenario {extend: true} option or using 'qs' over 'querystring' will be preferable ? – 
+Viraj Singh
+ Apr 16, 2021 at 14:14
+Show 7 more comments
+57
+
+If you ask me "what is the difference between express.urlencoded({extended: false}) and express.json()", well, the difference is:
+
+express.json()
+If you use express.json() it will parse the body from post/fetch request except from html post form. It wont parse information from the html post form :
+
+<form action="/" method="POST">
+    <input type="text" name="username">
+    <button>Submit</button>
+</form>
+For instance, if you fill the form with "dean" then submit it, Express wont have an idea what inside the body with this express code:
+
+const express = require('express')
+const app = express()
+
+app.use(express.json())
+// app.use(express.urlencoded({ extended: false }))
+app.use(express.static("public"))
+
+
+app.get("/", (req, res) => {
+    res.sendFile("index.html")
+})
+
+app.post("/", (req, res) => {
+    res.send(req.body)
+})
+
+
+const port = process.env.PORT || 3001
+app.listen(port, () => {
+    console.log(`Server Up in Port ${port}`);
+})
+It will send {} after you click submit. But if you uncommented app.use(express.urlencoded({extended: false})), then you will get {"username": "dean"}.
+
+So the difference is express.json() is a body parser for post request except html post form and express.urlencoded({extended: false}) is a body parser for html post form.
+---------------------------------------------------------------------------------------------------
+<form action="/profile" method="post" enctype="multipart/form-data">
+  <input type="file" name="avatar" />
+</form>
+
+for multipart forem data 
+multipart form data is one which is used to send text as well as file to server
+
+--------------------------------------------------------------------------------------------------
+
+You have to install npm package --> npm i express-async-handler.
+
+//import package
+const asyncHandler = require("express-async-handler");
+
+//when using async handler
+//wrap the async function with asynchandler
+//like this asyncHandler(async fn())
+const getRequest = asyncHandler(async (req, res) => {
+if(req.body.xxxx)
+{
+   const response = await db.collection.find();
+   res.status(200).send("success");
+}
+else{
+   res.status(400).send("failed");
+//we can simply throw error like this
+   throw new Error("Something went wrong")
+}
+
+})
+
+No need to worry about returning try catch blocks.
