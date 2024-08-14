@@ -29,7 +29,6 @@ key_secret:process.env.RAZORPAY_SECRET
 
 
 
-
 app.listen(PORT, async ()=>{
     await connectedtodb();
     console.log(`your server is running http://localhost:${PORT}`);

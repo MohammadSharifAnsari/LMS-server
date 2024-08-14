@@ -51,13 +51,15 @@ res.send('pong');
 })
 
 //app.all('*',callback)=> yeh keh rha hai kisi bhi route pe request jae jo upar define nhi hai then yeh walaa callback return kardo
-app.all('*',(req,res)=>{
+// app.all('*',(req,res)=>{
 
     
-res.status(400).send("404 -page not found");
+// res.status(400).send("404 -page not found");
 
+// })
+app.get("/",(req,res)=>{
+    res.status(200).json("Server runnning");
 })
-
 
 //yeh middle ware error object ko user ko pass karegi as a responce
 // yeh last me likha hai means  agar humara yeh wala (52) code encounter hua hai then humne kuch gadbadi ki hai tabhi yahan tak code aaya hai warna pehle hi responce chala jata
