@@ -22,7 +22,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));//work for post in html form
 //encoded url se query params ko nikalne ke liye hum isko use kar sakte hai
 app.use(cors({
-origin:[process.env.FRONTEND_URL1,process.env.FRONTEND_URL2],
+origin:[process.env.FRONTEND_URL1,process.env.FRONTEND_URL2,process.env.FRONTEND_URL3],
 credentials:true//cookie set ho jaegi
 
 }));

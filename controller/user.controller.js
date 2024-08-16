@@ -148,15 +148,15 @@ const login = async (req, res, next) => {
 
 // console.log("passsword",password);
 // console.log("user.password",user.password);
+console.log("user>>",user);
 
 
 
-
+if (!user) {
+    return next(new AppError("email is not register first register your email and then login", 403));
+}
         if (!user.comparepassword(password)) {
             return next(new AppError("please enter right password", 404));
-        }
-        if (!user) {
-            return next(new AppError("email is not register first register your email and then login", 403));
         }
         const token = await user.generateJWTToken();
         user.password = undefined;
