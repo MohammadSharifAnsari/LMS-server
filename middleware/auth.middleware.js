@@ -7,7 +7,7 @@ const isloggedin=async(req,res,next)=>{
     // const token=req.rawHeaders[1];
     const token=req.cookies.token;
 
-
+console.log("token>>",token);
     // console.log("token",req.rawHeaders[1]);
 
     if(!token){

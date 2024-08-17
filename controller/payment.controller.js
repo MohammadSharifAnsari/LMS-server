@@ -8,7 +8,7 @@ import crypto from "crypto";
 import axios from "axios";
 const getRazorPayKey = async (req, res, next) => {
     try {
-
+console.log("razorpay backend");
         res.status(200).json(
             {
                 success: true,
@@ -31,6 +31,7 @@ const getSubscription = async (req, res, next) => {
         //jab bhi subscription lene jate hai then islogged ke baad bhi check karte hai ki yeh valid user hai ki nhibecause yeh payment ki baat ho rhi hai
 
         const { id } = req.body.user;
+        console.log("id=",id);
 
         const user = await usermodel.findById(id);
         if (!user) {
