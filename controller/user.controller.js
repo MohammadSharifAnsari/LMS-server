@@ -114,7 +114,7 @@ const register = async (req, res, next) => {
         const token = await user.generateJWTToken();// we generate token at schema level
 
 
-        res.cookie('token', token, cookieOptions)
+        res.cookie('token', token, cookieOptions);
         res.status(201).json({
             success: true,
             message: "user register succesfully",
@@ -161,6 +161,7 @@ if (!user) {
         const token = await user.generateJWTToken();
         user.password = undefined;
         res.cookie("token", token, cookieOptions);
+        console.log("token in user login>>",token);
         return res.status(200).json(
             {
                 success: true,
