@@ -11,7 +11,9 @@ import crypto from "crypto"
 const cookieOptions = {
     maxAge: 7 * 24 * 60 * 60 * 100,//7 days ke liye cookie set hogi
     httpOnly: true,
-    secure: true
+    secure: true,
+    sameSite: 'None',
+    path: '/',
 }
 
 const register = async (req, res, next) => {

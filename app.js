@@ -26,7 +26,7 @@ origin:[process.env.FRONTEND_URL1,process.env.FRONTEND_URL3],
 credentials:true//cookie set ho jaegi
 
 }));
-
+// app.use(cookieParser());
 
 app.use(cookieparser());
 //parse the cookie into object like this
@@ -60,6 +60,11 @@ res.send('pong');
 app.get("/",(req,res)=>{
     res.status(200).json("Server runnning");
 })
+app.get('/cookie', (req, res) => {
+    // Access cookies
+    console.log(req.cookies); // This should now log your cookies
+    res.send('Cookie received');
+});
 
 //yeh middle ware error object ko user ko pass karegi as a responce
 // yeh last me likha hai means  agar humara yeh wala (52) code encounter hua hai then humne kuch gadbadi ki hai tabhi yahan tak code aaya hai warna pehle hi responce chala jata
