@@ -304,6 +304,8 @@ const changepassword = async (req, res, next) => {
 
     const { oldpassword, newpassword } = req.body;
    
+    console.log("oldpassword>>",oldpassword);
+    console.log("newpassword>>",newpassword);
 
     const { id } = req.body.user;
 

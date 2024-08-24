@@ -166,3 +166,16 @@ else{
 })
 
 No need to worry about returning try catch blocks.
+________________________________________________________________________________________________
+cookie server se to client me ja rhi thi 
+client se req.cookie se server me nhi aa rhi thi 
+aesa tab ho rha tha jab hum server dusri and client dusri machine par chalaenn
+same machine par yeh problem nhi aa rhi thi
+
+res se jab hum cookie set karen to production par humko path and samesite property bhi deni hoti hai first time wahi cookie with attribute jaker front end par set ho jati hai 
+ans agar humne samesite=='none' nhi diya hai to req object cookie ko nhi lekar aata samesite='strict' ka matlab hai ki cookie sirf usi (jis url par backend hai usi url ke different port par chalega) samesite='lex'or samesite='none' ka matlab hai ki cookie kisi bhi site par chla jaega from frontend
+
+1. Check the Cookie Attributes:
+SameSite: If the cookie is set with SameSite=Strict, it won't be sent with cross-site requests. Consider using SameSite=Lax or SameSite=None; Secure for cross-origin requests.
+Secure: Ensure you are running on https if the Secure flag is set; otherwise, the cookie won’t be sent.
+Path: Make sure the Path attribute is correctly set to allow the cookie to be sent on the requested URL.
