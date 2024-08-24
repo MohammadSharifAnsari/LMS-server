@@ -6,9 +6,9 @@ import { json } from "express";
 const isloggedin=async(req,res,next)=>{
     // const token=req.rawHeaders[1];
     const token=req.cookies.token;
-console.log("req",req);
-console.log("req.cookies",req.cookies);
-console.log("token>>",token);
+// console.log("req",req);
+// console.log("req.cookies",req.cookies);
+// console.log("token>>",token);
     // console.log("token",req.rawHeaders[1]);
 
     if(!token){
