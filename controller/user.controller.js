@@ -302,25 +302,27 @@ const reset = async (req, res, next) => {
 
 const changepassword = async (req, res, next) => {
 
-    const { oldpassword, newpassword } = req.body;
-   
-    console.log("oldpassword>>",oldpassword);
-    console.log("newpassword>>",newpassword);
+    try{
 
-    const { id } = req.body.user;
-
-
-    if (!oldpassword || !newpassword) {
-        return next(new AppError("all feilds are mandatory", 400));
-    }
-
-    const user = await usermodel.findById(id).select('+password');
-
-    if (!user) {
-        return next(new AppError("user does not exist", 400));
-    }
-
-    const isoldpassword = user.comparepassword(oldpassword);
+        const { oldpassword, newpassword } = req.body;
+        
+        console.log("oldpassword>>",oldpassword);
+        console.log("newpassword>>",newpassword);
+        
+        const { id } = req.body.user;
+        
+        
+        if (!oldpassword || !newpassword) {
+            return next(new AppError("all feilds are mandatory", 400));
+        }
+        
+        const user = await usermodel.findById(id).select('+password');
+        
+        if (!user) {
+            return next(new AppError("user does not exist", 400));
+        }
+        
+        const isoldpassword = user.comparepassword(oldpassword);
     //we use await here because comparepassword internally database se contact me hai
     if (!isoldpassword) {
         return next(new AppError("user enter wrong password,please try again", 400));
@@ -328,11 +330,15 @@ const changepassword = async (req, res, next) => {
     user.password = newpassword;
     await user.save();
     user.password = undefined;
-
+    
     res.status(200).json({
         success: true,
         message: "password changed successfully"
     })
+}
+catch(err){
+    return next(new AppError(err.message, 400));
+}
 
 }
 const updateuser = async (req, res, next) => {
