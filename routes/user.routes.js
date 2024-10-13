@@ -12,7 +12,7 @@ router.post('/register',upload.single('avatar'),register);
 router.post('/login',login);
 router.get('/logout',logout);
 router.get('/me',isloggedin,getprofile);
-router.post('/forgot-password',forgot);
+router.post('/forgot-password',forgot); 
 router.post('/reset-password/:resetToken',reset);
 router.post('/changepassword',isloggedin,changepassword);
 router.put('/update/:id',upload.single('avatar'),isloggedin,updateuser);

@@ -179,3 +179,12 @@ ans agar humne samesite=='none' nhi diya hai to req object cookie ko nhi lekar a
 SameSite: If the cookie is set with SameSite=Strict, it won't be sent with cross-site requests. Consider using SameSite=Lax or SameSite=None; Secure for cross-origin requests.
 Secure: Ensure you are running on https if the Secure flag is set; otherwise, the cookie won’t be sent.
 Path: Make sure the Path attribute is correctly set to allow the cookie to be sent on the requested URL.
+______________________________________________________________________________________________
+
+
+The HttpOnly property in a cookie is a security feature. When a cookie is marked as HttpOnly, it means that the cookie cannot be accessed or modified by JavaScript running on the web page. This helps protect the cookie from attacks like cross-site scripting (XSS), where malicious scripts try to steal sensitive information.
+
+In simple terms:
+
+Without HttpOnly: JavaScript on the page can read or change the cookie.
+With HttpOnly: JavaScript cannot touch the cookie, making it safer from certain attacks. Only the server can use it.

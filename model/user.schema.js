@@ -4,6 +4,7 @@ import bcrypt, { hash } from "bcrypt";
 import JWT from "jsonwebtoken";
 
 import crypto from "crypto";
+import { type } from "os";
 // import {Schema,model} from "mongoose"; this is also a
 
 
@@ -23,6 +24,9 @@ const userSchema=new mongoose.Schema({
         unqiue:true,
         match:[/^(?:(?:[\w`~!#$%^&*\-=+;:{}'|,?\/]+(?:(?:\.(?:"(?:\\?[\w`~!#$%^&*\-=+;:{}'|,?\/\.()<>\[\] @]|\\"|\\\\)*"|[\w`~!#$%^&*\-=+;:{}'|,?\/]+))*\.[\w`~!#$%^&*\-=+;:{}'|,?\/]+)?)|(?:"(?:\\?[\w`~!#$%^&*\-=+;:{}'|,?\/\.()<>\[\] @]|\\"|\\\\)+"))@(?:[a-zA-Z\d\-]+(?:\.[a-zA-Z\d\-]+)*|\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\])$/gim,'please set avalid email']
         //we give regular expression to match the email
+    },
+    googleId:{
+      type:String
     },
     password:{
         type:String,

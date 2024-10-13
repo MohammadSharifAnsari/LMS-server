@@ -6,6 +6,8 @@ import cloudinary from "cloudinary";
 import fs from 'fs/promises';
 import sendEmail from "../utils/sendmail.js";
 import crypto from "crypto"
+import passwordUpdated from "../mail/passwordUpdate.js";
+import takeNewPassword from "../mail/TakePassword.js";
 
 
 const cookieOptions = {
@@ -185,8 +187,14 @@ const logout = async (req, res, next) => {
     res.cookie('token', null, {
         secure: true,
         httpOnly: true,
+        sameSite: 'None',
+        path: '/',
         maxAge: 0
     })
+    res.cookie('MYSECRET',null,{
+        secure: true,
+        maxAge: 0
+    });
     res.status(200).json({
         success: true,
         message: "you are logged out successfully",
@@ -220,7 +228,10 @@ const getprofile = async (req, res, next) => {
 }
 const forgot = async (req, res, next) => {
 
+ 
+
     const { email } = req.body;
+    console.log("email==",email);
 
     const user = await usermodel.findOne({ email });
     if (!email) {
@@ -244,7 +255,9 @@ const forgot = async (req, res, next) => {
 
     try {
         const subject = "reset-password";
-        const message = `you can reset your password on clicking <a>${resetPasswordURL}</a> this url`;
+        const message = takeNewPassword(email,user?.name,resetPasswordURL);
+{/* <a>${resetPasswordURL}</a> */}
+
         await sendEmail(email, subject, message);//this function sent the email to user
       
         res.status(200).json({
@@ -272,6 +285,9 @@ const reset = async (req, res, next) => {
         const { resetToken } = req.params;
         //now validate that token and then change the passwpord
         const { password } = req.body;
+
+        console.log("password==",password);
+        console.log("resetPasswordtoken=",resetToken);
         //kyunki forgetpassword token database me encrypted form me store hai then first hum resetToken ko encrypt karenge then find karenge token in database
         const forgetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex')
        
@@ -294,7 +310,7 @@ const reset = async (req, res, next) => {
 
     }
     catch (err) {
-        return next(new AppError(err.message, 411));
+        return next(new AppError(err.message, 400));
 
     }
 
