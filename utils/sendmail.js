@@ -9,7 +9,7 @@ const sendEmail = async function (email, subject, message){
     secure: false, // true for 465, false for other ports
     auth: {//humko mail send karna hai to humko kuch authentication chahiye because we use third party
       user: process.env.SMTP_USERNAME,//sender email
-      pass: process.env.SMTP_PASSWORD,//password generate by sender
+      pass: process.env.SMTP_PASSWORD,//password generate by sender yeh password sender ki gmail par jao>manage google account>seach app password> create app and get password
     },
   });
 
