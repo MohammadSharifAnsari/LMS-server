@@ -48,7 +48,7 @@ app.use(session({
     secret:process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false }
+    cookie: { secure: false, sameSite: "None" }
   }));
   
   // Initialize passport
@@ -171,11 +171,11 @@ console.log("token in google>>",token);
   res.cookie('MYSECRET',"true",{
     maxAge: 7 * 24 * 60 * 60 * 100,//7 days ke liye cookie set hogi
     secure: true,
-    sameSite: 'None',
+    sameSite:'None',
     path: '/',
   });
 
-res.redirect(process.env.FRONTEND_URL1)
+res.redirect(process.env.FRONTEND_URL1);
   
 } catch (err) {
   res.redirect(`${process.env.FRONTEND_URL1}/error`);
